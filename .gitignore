@@ -60,3 +60,4 @@ outTmp/
 kotlin-ide/
 .kotlin/
 .teamcity/
+application.yml
