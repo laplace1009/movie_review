@@ -6,10 +6,6 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 class UserController(private val userService: UserService) {
-    @GetMapping("/")
-    fun mainIndex(): String {
-        return "index"
-    }
 
     @GetMapping("/users")
     fun createUserPage(): String {
@@ -23,7 +19,7 @@ class UserController(private val userService: UserService) {
         @RequestParam("email") email: String,
         @RequestParam("password") password: String
     ): String {
-        val retValue = userService.createUser(username, email, password)
+        userService.createUser(username, email, password)
         return "User registered: $username"
     }
 
@@ -38,7 +34,7 @@ class UserController(private val userService: UserService) {
         @RequestParam("email") email: String,
         @RequestParam("password") password: String
     ): String {
-        val retVal = userService.loginUser(email, password)
+        userService.loginUser(email, password)
         return "User logged: $email"
     }
 }
