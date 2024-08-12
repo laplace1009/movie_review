@@ -1,21 +1,19 @@
 package com.laplace.movie_review.service
 
+import com.laplace.movie_review.dto.UserInfo
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest
 import org.springframework.security.oauth2.core.user.OAuth2User
 import org.springframework.stereotype.Service
 
 @Service
-class CustomOAuth2UserService : DefaultOAuth2UserService() {
+class CustomOAuth2UserService(
+    private val authService: AuthService
+) : DefaultOAuth2UserService() {
     override fun loadUser(userRequest: OAuth2UserRequest): OAuth2User {
         val oAuth2User = super.loadUser(userRequest)
-
-        val attributes = oAuth2User.attributes
-        val email = attributes["email"] as String?
-        val name = attributes["name"] as String?
-        println("User's email: $email")
-        println("User's name: $name")
-
+        val email = oAuth2User.attributes["email"] as String
+        authService.login(UserInfo(null, email, null))
         return oAuth2User
     }
 }
