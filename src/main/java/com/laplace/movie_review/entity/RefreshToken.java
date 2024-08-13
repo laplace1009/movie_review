@@ -12,8 +12,8 @@ public class RefreshToken {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "account_id", nullable = false)
+    private Account account;
 
     @Column(length = 255)
     private String token;
@@ -26,8 +26,8 @@ public class RefreshToken {
 
     public RefreshToken() {}
 
-    public RefreshToken(User user, String token, LocalDateTime expiresAt) {
-        this.user = user;
+    public RefreshToken(Account account, String token, LocalDateTime expiresAt) {
+        this.account = account;
         this.token = token;
         this.expiresAt = expiresAt;
     }
@@ -41,7 +41,7 @@ public class RefreshToken {
     public String toString() {
         return "RefreshToken{" +
                 "id=" + id +
-                ", user=" + user +
+                ", user=" + account +
                 ", token='" + token + '\'' +
                 ", expiresAt=" + expiresAt +
                 ", createdAt=" + createdAt +
@@ -56,12 +56,12 @@ public class RefreshToken {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public Account getUser() {
+        return account;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUser(Account account) {
+        this.account = account;
     }
 
     public String getToken() {

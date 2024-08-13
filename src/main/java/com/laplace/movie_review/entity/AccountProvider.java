@@ -3,15 +3,15 @@ package com.laplace.movie_review.entity;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "user_providers")
-public class UserProvider {
+@Table(name = "account_providers")
+public class AccountProvider {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    @JoinColumn(name = "account_id", nullable = false)
+    private Account account;
 
     @Column(nullable = false, length = 50)
     private String providerName;
@@ -19,10 +19,10 @@ public class UserProvider {
     @Column(length = 100)
     private String providerId;
 
-    public UserProvider() {}
+    public AccountProvider() {}
 
-    public UserProvider(User user, String providerName, String providerId) {
-        this.user = user;
+    public AccountProvider(Account account, String providerName, String providerId) {
+        this.account = account;
         this.providerName = providerName;
         this.providerId = providerId;
     }

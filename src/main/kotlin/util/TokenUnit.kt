@@ -1,6 +1,6 @@
 package util
 
 enum class TokenUnit(val token: String) {
-    ACCESS_TOKEN("access_token"),
-    REFRESH_TOKEN("refresh_token");
+    ACCESS_TOKEN("ACCESS_TOKEN"),
+    REFRESH_TOKEN("REFRESH_TOKEN"),;
 }

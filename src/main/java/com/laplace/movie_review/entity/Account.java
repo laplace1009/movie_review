@@ -5,8 +5,8 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-    @Table(name = "users")
-    public class User {
+    @Table(name = "accounts")
+    public class Account {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         private Long id;
@@ -23,13 +23,17 @@ import java.time.LocalDateTime;
         @Column(nullable = false)
         private LocalDateTime createdAt;
 
-    public User() {}
+    public Account() {}
 
-    public User(String username, String email, String password, LocalDateTime createdAt) {
+    public Account(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;
-        this.createdAt = createdAt;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
     }
 
     public Long getUserId() {

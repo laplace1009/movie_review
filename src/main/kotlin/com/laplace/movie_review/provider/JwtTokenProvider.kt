@@ -1,4 +1,4 @@
-package com.laplace.movie_review.service
+package com.laplace.movie_review.provider
 
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
@@ -24,12 +24,30 @@ class JwtTokenProvider {
         secretKey = Keys.hmacShaKeyFor(Base64.getDecoder().decode(secretKeyString))
     }
 
-    fun getAccessToken(username: String, roles: List<String>, tokenUnit: TokenUnit): Pair<String, Date> {
+    fun generateToken(username: String, roles: List<String>, tokenUnit: TokenUnit): Pair<String, Date> {
         return when (tokenUnit.token) {
             TokenUnit.ACCESS_TOKEN.token -> createToken(username, roles, Duration.ofHours(1))
             TokenUnit.REFRESH_TOKEN.token -> createToken(username, roles, Duration.ofDays(180))
-            // 도달 할 수 없음
             else -> throw IllegalArgumentException("Invalid token type")
+        }
+    }
+
+    fun getUsernameFromToken(token: String): String {
+        return Jwts.parser()
+            .verifyWith(secretKey)
+            .build()
+            .parseSignedClaims(token)
+            .payload
+            .subject
+    }
+
+    fun validateToken(token: String): Boolean {
+        try {
+            val payload = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token)
+            println(payload.toString())
+            return true
+        } catch (e: Exception) {
+            throw IllegalArgumentException("Invalid token")
         }
     }
 
@@ -45,21 +63,4 @@ class JwtTokenProvider {
 
         return Pair(token, validity)
     }
-
-//    private fun calculateTime(validityExtension: String): Long {
-//        val extensionSecond = validityExtension.let {
-//            val timeUnit = TimeUnit.fromString(it)
-//            val amount = it.replace(timeUnit?.unit ?: "", "").trim().toLongOrNull() ?: 0L
-//
-//            when (timeUnit) {
-//                TimeUnit.SECONDS -> amount * TimeMillSecond.SECOND.millis
-//                TimeUnit.MINUTES -> amount * TimeMillSecond.MINUTE.millis
-//                TimeUnit.HOURS -> amount * TimeMillSecond.HOUR.millis
-//                TimeUnit.DAYS -> amount * TimeMillSecond.DAY.millis
-//                else -> 0
-//            }
-//        }
-//
-//        return extensionSecond
-//    }
 }

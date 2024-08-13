@@ -1,8 +1,7 @@
 package com.laplace.movie_review.controller
 
-import com.laplace.movie_review.dto.UserInfo
+import com.laplace.movie_review.dto.AccountInfo
 import com.laplace.movie_review.service.AuthService
-import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 import util.AuthProviderName
@@ -11,19 +10,19 @@ import util.AuthProviderName
 class AuthController(
     private val authService: AuthService,
 ) {
-    @GetMapping("/user")
+    @GetMapping("/account")
     fun createUserPage(): String {
-        return "users"
+        return "user"
     }
 
-    @PostMapping("/user")
+    @PostMapping("/account")
     @ResponseBody
     fun registerUser(
         @RequestParam("userName") username: String,
         @RequestParam("email") email: String,
         @RequestParam("password") password: String
     ): String {
-        authService.createUser(UserInfo(username, email, password, AuthProviderName.LOCAL, providerId = null))
+        authService.createLocalUser(AccountInfo(username, email, password, AuthProviderName.LOCAL, providerId = null))
         return "User registered: $username"
     }
 
@@ -33,15 +32,8 @@ class AuthController(
     }
 
     @PostMapping("/login")
-    fun login(@RequestBody request: UserInfo): ResponseEntity<String> {
-        val token = authService.login(request)
-        return ResponseEntity.ok(token)
+    @ResponseBody
+    fun login(@RequestParam email: String, @RequestParam password: String): String {
+        return "login success"
     }
-
-//    @PostMapping("/logout")
-//    @ResponseBody
-//    fun logout(): String {
-//        authService.logout()
-//        return "redirect:/"
-//    }
 }
