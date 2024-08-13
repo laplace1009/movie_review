@@ -5,23 +5,23 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users")
-public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long userId;
+    @Table(name = "users")
+    public class User {
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
+        private Long id;
 
-    @Column(nullable = false, length = 50)
-    private String username;
+        @Column(nullable = false, length = 50)
+        private String username;
 
-    @Column(nullable = false, length = 100)
-    private String email;
+        @Column(nullable = false, length = 100)
+        private String email;
 
-    @Column(length = 100)
-    private String password;
+        @Column(length = 100)
+        private String password;
 
-    @Column(nullable = false)
-    private LocalDateTime createdAt;
+        @Column(nullable = false)
+        private LocalDateTime createdAt;
 
     public User() {}
 
@@ -33,11 +33,11 @@ public class User {
     }
 
     public Long getUserId() {
-        return userId;
+        return id;
     }
 
     public void setUserId(Long userId) {
-        this.userId = userId;
+        this.id = userId;
     }
 
     public String getUsername() {
@@ -75,7 +75,7 @@ public class User {
     @Override
     public String toString() {
         return "Users{" +
-                "userId=" + userId +
+                "userId=" + id +
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +

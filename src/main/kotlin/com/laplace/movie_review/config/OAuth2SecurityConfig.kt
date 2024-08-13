@@ -16,7 +16,7 @@ class OAuth2SecurityConfig(private val oAuth2UserService: CustomOAuth2UserServic
         http
             .authorizeHttpRequests { authorize ->
                 authorize
-                    .requestMatchers("/", "/login").permitAll()
+                    .requestMatchers("/", "/login", "/h2-console").permitAll()
                     .anyRequest().authenticated()
             }
             .oauth2Login { oauth2Login ->
@@ -32,6 +32,7 @@ class OAuth2SecurityConfig(private val oAuth2UserService: CustomOAuth2UserServic
             .formLogin { form ->
                 form.disable()
             }
+            .headers { headers -> headers.frameOptions { frameOptions -> frameOptions.disable() } }
             .csrf { csrfConfigurer ->
                 csrfConfigurer.disable()
             }

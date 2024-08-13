@@ -16,6 +16,14 @@ public class UserProvider {
     @Column(nullable = false, length = 50)
     private String providerName;
 
-    @Column(nullable = false, length = 100)
+    @Column(length = 100)
     private String providerId;
+
+    public UserProvider() {}
+
+    public UserProvider(User user, String providerName, String providerId) {
+        this.user = user;
+        this.providerName = providerName;
+        this.providerId = providerId;
+    }
 }

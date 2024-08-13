@@ -1,11 +1,11 @@
 package com.laplace.movie_review.controller
 
 import com.laplace.movie_review.dto.UserInfo
-import com.laplace.movie_review.entity.User
 import com.laplace.movie_review.service.AuthService
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
+import util.AuthProviderName
 
 @Controller
 class AuthController(
@@ -23,7 +23,7 @@ class AuthController(
         @RequestParam("email") email: String,
         @RequestParam("password") password: String
     ): String {
-        authService.createUser(UserInfo(username, email, password))
+        authService.createUser(UserInfo(username, email, password, AuthProviderName.LOCAL, providerId = null))
         return "User registered: $username"
     }
 
