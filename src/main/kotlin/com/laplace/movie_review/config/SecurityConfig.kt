@@ -3,7 +3,11 @@ package com.laplace.movie_review.config
 import com.laplace.movie_review.filter.JwtAuthenticationFilter
 import com.laplace.movie_review.service.CustomOAuth2UserService
 import com.laplace.movie_review.provider.JwtTokenProvider
+import com.laplace.movie_review.repository.RefreshTokenRepository
 import com.laplace.movie_review.service.AuthService
+import com.laplace.movie_review.service.TokenService
+import io.jsonwebtoken.ExpiredJwtException
+import io.jsonwebtoken.JwtException
 import jakarta.servlet.http.Cookie
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -27,12 +31,13 @@ import util.TokenUnit
 class SecurityConfig(
     private val oAuth2UserService: CustomOAuth2UserService,
     private val jwtAuthenticationFilter: JwtAuthenticationFilter,
-    private val userDetailsService: UserDetailsService,
+    private val authService: AuthService,
+    private val tokenService: TokenService
 ) {
     @Bean
     fun authenticationProvider(passwordEncoder: PasswordEncoder): AuthenticationProvider {
         val authProvider = DaoAuthenticationProvider()
-        authProvider.setUserDetailsService(userDetailsService)
+        authProvider.setUserDetailsService(authService)
         authProvider.setPasswordEncoder(passwordEncoder())
         return authProvider
     }
@@ -48,12 +53,30 @@ class SecurityConfig(
     }
 
     @Bean
-    fun authenticationSuccessHandler(authService: AuthService, jwtTokenProvider: JwtTokenProvider): AuthenticationSuccessHandler {
+    fun authenticationSuccessHandler(
+        jwtTokenProvider: JwtTokenProvider,
+    ): AuthenticationSuccessHandler {
         return AuthenticationSuccessHandler { request, response, authentication ->
             val userDetails = authentication.principal as UserDetails
             val roles = authentication.authorities.map { it.authority }
-            val (accessToken, _) = jwtTokenProvider.generateToken(userDetails.username, roles, TokenUnit.ACCESS_TOKEN)
-            response.addCookie(Cookie(TokenUnit.ACCESS_TOKEN.token, accessToken))
+            val storedRefreshToken = tokenService.getRefreshTokenByEmail(userDetails.username)
+            try {
+                if (storedRefreshToken != null && !tokenService.validateToken(storedRefreshToken.token)) {
+                    response.addCookie(Cookie(TokenUnit.REFRESH_TOKEN.token, storedRefreshToken.token))
+                    val (accessToken, _) = jwtTokenProvider.generateToken(userDetails.username, roles, TokenUnit.ACCESS_TOKEN)
+                    response.addCookie(Cookie(TokenUnit.ACCESS_TOKEN.token, accessToken))
+                }
+            } catch (ex: JwtException) {
+                when (ex) {
+                    is ExpiredJwtException -> {
+                        val (newRefreshToken, expiresAt) = tokenService.generateToken(userDetails.username, roles, TokenUnit.REFRESH_TOKEN)
+                        tokenService.saveToken(userDetails.username, newRefreshToken, expiresAt)
+                        response.addCookie(Cookie(TokenUnit.REFRESH_TOKEN.token, newRefreshToken))
+                        val (accessToken, _) = jwtTokenProvider.generateToken(userDetails.username, roles, TokenUnit.ACCESS_TOKEN)
+                        response.addCookie(Cookie(TokenUnit.ACCESS_TOKEN.token, accessToken))
+                    }
+                }
+            }
         }
     }
 
@@ -62,8 +85,17 @@ class SecurityConfig(
         http
             .authorizeHttpRequests { authorize ->
                 authorize
-                    .requestMatchers("/", "/login", "/user").permitAll()
+                    .requestMatchers("/", "/login","/account").permitAll()
                     .anyRequest().authenticated()
+            }
+            .formLogin { formLogin ->
+                formLogin
+                    .loginPage("/login")
+                    .loginProcessingUrl("/login")
+                    .usernameParameter("email")
+                    .successHandler(authenticationSuccessHandler(jwtTokenProvider))
+                    .defaultSuccessUrl("/", true)
+                    .permitAll()
             }
             .oauth2Login { oauth2Login ->
                 oauth2Login
@@ -72,19 +104,8 @@ class SecurityConfig(
                         userInfoEndPoint.userService(oAuth2UserService)
                     }
             }
-            .formLogin { formLogin ->
-                formLogin
-                    .loginPage("/login")
-                    .loginProcessingUrl("/login")
-                    .usernameParameter("email")
-                    .defaultSuccessUrl("/", true)
-                    .successHandler()
-            }
             .authenticationProvider(authenticationProvider(passwordEncoder()))
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)
-            .formLogin { form ->
-                form.disable()
-            }
             .headers { headers -> headers.frameOptions { frameOptions -> frameOptions.disable() } }
             .csrf { csrfConfigurer ->
                 csrfConfigurer.disable()

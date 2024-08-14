@@ -11,7 +11,7 @@ class AuthController(
     private val authService: AuthService,
 ) {
     @GetMapping("/account")
-    fun createUserPage(): String {
+    fun createAccountPage(): String {
         return "user"
     }
 
@@ -22,18 +22,14 @@ class AuthController(
         @RequestParam("email") email: String,
         @RequestParam("password") password: String
     ): String {
-        authService.createLocalUser(AccountInfo(username, email, password, AuthProviderName.LOCAL, providerId = null))
+        authService.createLocalUser(
+            AccountInfo(username, email, password, AuthProviderName.LOCAL, providerId = null)
+        )
         return "User registered: $username"
     }
 
     @GetMapping("/login")
-    fun loginView(): String {
+    fun loginPage(): String {
         return "login"
-    }
-
-    @PostMapping("/login")
-    @ResponseBody
-    fun login(@RequestParam email: String, @RequestParam password: String): String {
-        return "login success"
     }
 }

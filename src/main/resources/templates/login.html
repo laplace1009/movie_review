@@ -2,16 +2,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>login</title>
+    <title>Login</title>
 </head>
 <body>
-<form method="post" action="/login">
-    <input name="email" type="email" id="email">
-    <label for="email">email</label>
-    <input name="password" type="password" id="password">
-    <label for="password">password</label>
-    <button type="submit">login</button>
+<form th:action="@{/login}" method="post">
+    <div>
+        <input type="email" name="email" placeholder="Email"/>
+    </div>
+    <div>
+        <input type="password" name="password" placeholder="Password"/>
+    </div>
+    <input type="submit" value="Log in" />
 </form>
-<a href="/oauth2/authorization/google">구글 로그인</a>
+<br>
+<a href="/oauth2/authorization/google">
+    <button type="button">구글로 로그인</button>
+</a>
 </body>
 </html>

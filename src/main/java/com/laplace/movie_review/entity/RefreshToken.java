@@ -41,7 +41,7 @@ public class RefreshToken {
     public String toString() {
         return "RefreshToken{" +
                 "id=" + id +
-                ", user=" + account +
+                ", account=" + account +
                 ", token='" + token + '\'' +
                 ", expiresAt=" + expiresAt +
                 ", createdAt=" + createdAt +
@@ -56,11 +56,11 @@ public class RefreshToken {
         this.id = id;
     }
 
-    public Account getUser() {
+    public Account getAccount() {
         return account;
     }
 
-    public void setUser(Account account) {
+    public void setAccount(Account account) {
         this.account = account;
     }
 

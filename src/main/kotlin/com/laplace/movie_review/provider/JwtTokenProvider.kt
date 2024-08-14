@@ -1,9 +1,19 @@
 package com.laplace.movie_review.provider
 
+import io.jsonwebtoken.Claims
+import io.jsonwebtoken.ExpiredJwtException
+import io.jsonwebtoken.Header
+import io.jsonwebtoken.Jws
+import io.jsonwebtoken.Jwt
+import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
+import io.jsonwebtoken.UnsupportedJwtException
 import io.jsonwebtoken.security.Keys
+import io.jsonwebtoken.security.SignatureException
 import jakarta.annotation.PostConstruct
+import jakarta.servlet.http.Cookie
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.security.core.GrantedAuthority
 import org.springframework.stereotype.Component
 import util.TokenUnit
 import java.util.*
@@ -41,13 +51,34 @@ class JwtTokenProvider {
             .subject
     }
 
+    fun getRolesFromToken(token: String): List<String> {
+        val claims = getClaimsFromToken(token)
+        return claims.payload["roles"] as List<String>
+    }
+
+    fun getClaimsFromToken(token: String): Jws<Claims>  {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token)
+    }
+
     fun validateToken(token: String): Boolean {
-        try {
-            val payload = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token)
-            println(payload.toString())
-            return true
-        } catch (e: Exception) {
-            throw IllegalArgumentException("Invalid token")
+        return try {
+            Jwts.parser()
+                .verifyWith(secretKey)
+                .build()
+                .parseSignedClaims(token)
+            true
+        } catch (e: ExpiredJwtException) {
+            // 토큰 만료
+            throw e
+        } catch (e: UnsupportedJwtException) {
+            // 지원 불가 JWT 형식
+            throw e
+        } catch (e: SignatureException) {
+            // 서명이 잘못된 경우
+            throw e
+        } catch (e: IllegalArgumentException) {
+            // 빈 토큰 or 부적절한 경우
+            throw e
         }
     }
 
