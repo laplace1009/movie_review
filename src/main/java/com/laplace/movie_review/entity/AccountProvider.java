@@ -26,4 +26,46 @@ public class AccountProvider {
         this.providerName = providerName;
         this.providerId = providerId;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    public String getProviderName() {
+        return providerName;
+    }
+
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
+    }
+
+    public String getProviderId() {
+        return providerId;
+    }
+
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
+    }
+
+    @Override
+    public String toString() {
+        return "AccountProvider{" +
+                "id=" + id +
+                ", account=" + account +
+                ", providerName='" + providerName + '\'' +
+                ", providerId='" + providerId + '\'' +
+                '}';
+    }
 }
