@@ -14,6 +14,9 @@ import jakarta.annotation.PostConstruct
 import jakarta.servlet.http.Cookie
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.GrantedAuthority
+import org.springframework.security.core.authority.SimpleGrantedAuthority
+import org.springframework.security.core.userdetails.User
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
 import util.TokenUnit
 import java.util.*
@@ -40,6 +43,15 @@ class JwtTokenProvider {
             TokenUnit.REFRESH_TOKEN.token -> createToken(username, roles, Duration.ofDays(180))
             else -> throw IllegalArgumentException("Invalid token type")
         }
+    }
+
+    fun getUserDetailsFromToken(token: String): UserDetails {
+        val claims = getClaimsFromToken(token)
+        val username = claims.payload.subject
+        val roles = claims.payload["roles"] as List<String>
+        val authorities = roles.map { SimpleGrantedAuthority(it) }
+
+        return User(username, "", authorities)
     }
 
     fun getUsernameFromToken(token: String): String {

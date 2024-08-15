@@ -53,34 +53,6 @@ class SecurityConfig(
     }
 
     @Bean
-    fun authenticationSuccessHandler(
-        jwtTokenProvider: JwtTokenProvider,
-    ): AuthenticationSuccessHandler {
-        return AuthenticationSuccessHandler { request, response, authentication ->
-            val userDetails = authentication.principal as UserDetails
-            val roles = authentication.authorities.map { it.authority }
-            val storedRefreshToken = tokenService.getRefreshTokenByEmail(userDetails.username)
-            try {
-                if (storedRefreshToken != null && !tokenService.validateToken(storedRefreshToken.token)) {
-                    response.addCookie(Cookie(TokenUnit.REFRESH_TOKEN.token, storedRefreshToken.token))
-                    val (accessToken, _) = jwtTokenProvider.generateToken(userDetails.username, roles, TokenUnit.ACCESS_TOKEN)
-                    response.addCookie(Cookie(TokenUnit.ACCESS_TOKEN.token, accessToken))
-                }
-            } catch (ex: JwtException) {
-                when (ex) {
-                    is ExpiredJwtException -> {
-                        val (newRefreshToken, expiresAt) = tokenService.generateToken(userDetails.username, roles, TokenUnit.REFRESH_TOKEN)
-                        tokenService.saveToken(userDetails.username, newRefreshToken, expiresAt)
-                        response.addCookie(Cookie(TokenUnit.REFRESH_TOKEN.token, newRefreshToken))
-                        val (accessToken, _) = jwtTokenProvider.generateToken(userDetails.username, roles, TokenUnit.ACCESS_TOKEN)
-                        response.addCookie(Cookie(TokenUnit.ACCESS_TOKEN.token, accessToken))
-                    }
-                }
-            }
-        }
-    }
-
-    @Bean
     fun securityFilterChain(http: HttpSecurity, jwtTokenProvider: JwtTokenProvider): SecurityFilterChain {
         http
             .authorizeHttpRequests { authorize ->
@@ -93,7 +65,6 @@ class SecurityConfig(
                     .loginPage("/login")
                     .loginProcessingUrl("/login")
                     .usernameParameter("email")
-                    .successHandler(authenticationSuccessHandler(jwtTokenProvider))
                     .defaultSuccessUrl("/", true)
                     .permitAll()
             }

@@ -3,12 +3,8 @@ package com.laplace.movie_review.service
 import com.laplace.movie_review.dto.AccountInfo
 import com.laplace.movie_review.entity.Account
 import com.laplace.movie_review.entity.AccountProvider
-import com.laplace.movie_review.entity.RefreshToken
 import com.laplace.movie_review.repository.AccountProviderRepository
 import com.laplace.movie_review.repository.AccountRepository
-import com.laplace.movie_review.repository.RefreshTokenRepository
-import jakarta.servlet.http.Cookie
-import jakarta.servlet.http.HttpServletResponse
 import org.springframework.context.annotation.Lazy
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.core.userdetails.User

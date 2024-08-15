@@ -5,6 +5,8 @@ import com.laplace.movie_review.provider.JwtTokenProvider
 import com.laplace.movie_review.repository.AccountRepository
 import com.laplace.movie_review.repository.RefreshTokenRepository
 import io.jsonwebtoken.JwtException
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
 import util.TokenUnit
 import java.time.ZoneId
@@ -27,6 +29,11 @@ class TokenService(
         } catch (ex: JwtException) {
             throw ex
         }
+    }
+
+    fun getAuthentication(token: String): Authentication {
+        val userDetails = jwtTokenProvider.getUserDetailsFromToken(token)
+        return UsernamePasswordAuthenticationToken(userDetails, "", userDetails.authorities)
     }
 
     fun getRefreshTokenByEmail(email: String): RefreshToken? {
