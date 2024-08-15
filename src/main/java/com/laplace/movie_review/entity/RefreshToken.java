@@ -15,7 +15,7 @@ public class RefreshToken {
     @JoinColumn(name = "account_id", nullable = false)
     private Account account;
 
-    @Column(length = 255)
+    @Column(length = 1024)
     private String token;
 
     @Column(name = "expires_at")

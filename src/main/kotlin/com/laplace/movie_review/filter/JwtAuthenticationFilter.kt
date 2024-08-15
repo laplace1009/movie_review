@@ -7,11 +7,14 @@ import jakarta.servlet.FilterChain
 import jakarta.servlet.http.Cookie
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.servlet.http.HttpServletResponse
+import org.springframework.security.authentication.BadCredentialsException
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
-import util.Roles
-import util.TokenUnit
+import com.laplace.movie_review.util.Roles
+import com.laplace.movie_review.util.TokenUnit
 
 @Component
 class JwtAuthenticationFilter(
@@ -23,8 +26,10 @@ class JwtAuthenticationFilter(
         response: HttpServletResponse,
         filterChain: FilterChain
     ) {
+        // 쿠키에 엑세스 토큰이 있으면
         getJwtFromRequest(request, TokenUnit.ACCESS_TOKEN)?.let { cookieAccessToken ->
             try {
+                // 있다면 토큰이 유효한지 검사
                 if (tokenService.validateToken(cookieAccessToken)) {
                     val authentication = tokenService.getAuthentication(cookieAccessToken)
                     SecurityContextHolder.getContext().authentication = authentication
@@ -33,24 +38,28 @@ class JwtAuthenticationFilter(
                 handleJwtException(request, response, ex)
             }
         } ?: run {
+            // 액세스 토큰이 쿠키에 없다면
             val userInfo = SecurityContextHolder.getContext().authentication
             userInfo?.let { user ->
-                val refreshTokenEntity = tokenService.getRefreshTokenByEmail(user.name)
+                val username = when (user) {
+                    is UsernamePasswordAuthenticationToken -> user.name
+                    is OAuth2AuthenticationToken -> user.principal.attributes["email"] as String
+                    else -> throw BadCredentialsException("Invalid user authentication")
+                }
+                val refreshTokenEntity = tokenService.getRefreshTokenByEmail(username)
                 refreshTokenEntity?.let { entity ->
                     try {
                         if (tokenService.validateToken(entity.token)) {
-                            val name = user.name
                             val roles = user.authorities.map { it.authority }
-                            generateAndAddTokenToResponse(response, name, roles, TokenUnit.ACCESS_TOKEN)
+                            generateAndAddTokenToResponse(response, username, roles, TokenUnit.ACCESS_TOKEN)
                         }
                     } catch (ex: JwtException) {
                         handleRefreshTokenExpiration(response, ex)
                     }
                 } ?: run {
-                    val name = user.name
                     val roles = user.authorities.map { it.authority }
-                    generateAndAddTokenToResponse(response,name, roles, TokenUnit.REFRESH_TOKEN)
-                    generateAndAddTokenToResponse(response,name, roles, TokenUnit.ACCESS_TOKEN)
+                    generateAndAddTokenToResponse(response, username, roles, TokenUnit.REFRESH_TOKEN)
+                    generateAndAddTokenToResponse(response, username, roles, TokenUnit.ACCESS_TOKEN)
                 }
             }
         }

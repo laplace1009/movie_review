@@ -1,6 +1,6 @@
 package com.laplace.movie_review.dto
 
-import util.AuthProviderName
+import com.laplace.movie_review.util.AuthProviderName
 
 data class AccountInfo(
     val username: String?,

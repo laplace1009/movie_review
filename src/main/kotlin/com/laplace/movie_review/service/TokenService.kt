@@ -8,7 +8,7 @@ import io.jsonwebtoken.JwtException
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
-import util.TokenUnit
+import com.laplace.movie_review.util.TokenUnit
 import java.time.ZoneId
 import java.util.*
 

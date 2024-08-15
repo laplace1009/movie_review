@@ -3,12 +3,8 @@ package com.laplace.movie_review.config
 import com.laplace.movie_review.filter.JwtAuthenticationFilter
 import com.laplace.movie_review.service.CustomOAuth2UserService
 import com.laplace.movie_review.provider.JwtTokenProvider
-import com.laplace.movie_review.repository.RefreshTokenRepository
 import com.laplace.movie_review.service.AuthService
 import com.laplace.movie_review.service.TokenService
-import io.jsonwebtoken.ExpiredJwtException
-import io.jsonwebtoken.JwtException
-import jakarta.servlet.http.Cookie
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.security.authentication.AuthenticationManager
@@ -17,14 +13,11 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
-import org.springframework.security.core.userdetails.UserDetails
-import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.SecurityFilterChain
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter
-import util.TokenUnit
+import com.laplace.movie_review.util.TokenUnit
 
 @Configuration
 @EnableWebSecurity
@@ -74,6 +67,18 @@ class SecurityConfig(
                     .userInfoEndpoint { userInfoEndPoint ->
                         userInfoEndPoint.userService(oAuth2UserService)
                     }
+            }
+            .logout { logout ->
+                logout
+                    .logoutUrl("/logout")
+                    .logoutSuccessUrl("/")
+                    .invalidateHttpSession(true)
+                    .deleteCookies(
+                        "JSESSIONID",
+                        TokenUnit.REFRESH_TOKEN.token,
+                        TokenUnit.ACCESS_TOKEN.token
+                    )
+                    .permitAll()
             }
             .authenticationProvider(authenticationProvider(passwordEncoder()))
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter::class.java)

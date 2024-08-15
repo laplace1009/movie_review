@@ -2,23 +2,18 @@ package com.laplace.movie_review.provider
 
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.ExpiredJwtException
-import io.jsonwebtoken.Header
 import io.jsonwebtoken.Jws
-import io.jsonwebtoken.Jwt
-import io.jsonwebtoken.JwtException
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.UnsupportedJwtException
 import io.jsonwebtoken.security.Keys
 import io.jsonwebtoken.security.SignatureException
 import jakarta.annotation.PostConstruct
-import jakarta.servlet.http.Cookie
 import org.springframework.beans.factory.annotation.Value
-import org.springframework.security.core.GrantedAuthority
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Component
-import util.TokenUnit
+import com.laplace.movie_review.util.TokenUnit
 import java.util.*
 import javax.crypto.SecretKey
 import java.time.Duration

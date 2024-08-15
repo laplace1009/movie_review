@@ -11,12 +11,6 @@ class MainController {
         return "index"
     }
 
-//    @GetMapping("/home")
-//    fun home(model: Model, @AuthenticationPrincipal user: OAuth2User): String {
-//        model.addAttribute("name", user.getAttribute<String>("name"))
-//        return "home"
-//    }
-
     @GetMapping("/home")
     fun home(model: Model): String {
 //        model.addAttribute("name")

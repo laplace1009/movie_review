@@ -4,7 +4,7 @@ import com.laplace.movie_review.dto.AccountInfo
 import com.laplace.movie_review.service.AuthService
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
-import util.AuthProviderName
+import com.laplace.movie_review.util.AuthProviderName
 
 @Controller
 class AuthController(
@@ -12,7 +12,7 @@ class AuthController(
 ) {
     @GetMapping("/account")
     fun createAccountPage(): String {
-        return "user"
+        return "account"
     }
 
     @PostMapping("/account")

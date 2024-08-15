@@ -5,23 +5,23 @@ import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-    @Table(name = "accounts")
-    public class Account {
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        private Long id;
+@Table(name = "accounts")
+public class Account {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-        @Column(nullable = false, length = 50)
-        private String username;
+    @Column(nullable = false, length = 50)
+    private String username;
 
-        @Column(nullable = false, length = 100)
-        private String email;
+    @Column(nullable = false, length = 100)
+    private String email;
 
-        @Column(length = 100)
-        private String password;
+    @Column(length = 100)
+    private String password;
 
-        @Column(nullable = false)
-        private LocalDateTime createdAt;
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
 
     public Account() {}
 
