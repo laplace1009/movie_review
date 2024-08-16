@@ -1,6 +1,6 @@
 package com.laplace.movie_review.controller
 
-import com.laplace.movie_review.dto.AccountInfo
+import com.laplace.movie_review.dto.account.AccountDTO
 import com.laplace.movie_review.service.AuthService
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
@@ -23,7 +23,7 @@ class AuthController(
         @RequestParam("password") password: String
     ): String {
         authService.createLocalUser(
-            AccountInfo(username, email, password, AuthProviderName.LOCAL, providerId = null)
+            AccountDTO(username, email, password, AuthProviderName.LOCAL, providerId = null)
         )
         return "User registered: $username"
     }

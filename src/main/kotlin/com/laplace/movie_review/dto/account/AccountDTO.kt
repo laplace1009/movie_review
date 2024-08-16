@@ -1,8 +1,8 @@
-package com.laplace.movie_review.dto
+package com.laplace.movie_review.dto.account
 
 import com.laplace.movie_review.util.AuthProviderName
 
-data class AccountInfo(
+data class AccountDTO(
     val username: String?,
     val email: String,
     val password: String?,

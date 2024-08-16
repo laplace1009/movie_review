@@ -1,6 +1,6 @@
 package com.laplace.movie_review.controller
 
-import com.laplace.movie_review.dto.AccountInfo
+import com.laplace.movie_review.dto.account.AccountDTO
 import com.laplace.movie_review.service.AuthService
 import com.laplace.movie_review.service.TokenService
 import com.laplace.movie_review.util.AuthProviderName
@@ -43,7 +43,7 @@ class AuthControllerTest {
 
 
         Mockito.doNothing().`when`(authService).createLocalUser(
-            AccountInfo(username, email, password, AuthProviderName.LOCAL, null)
+            AccountDTO(username, email, password, AuthProviderName.LOCAL, null)
         )
 
         mockMvc.perform(

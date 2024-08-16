@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h1>Movie Create</h1>
+<form th:action="@{/movie/create}" method="post">
+  <div>
+    <input type="text" name="title" placeholder="Movie Name"/>
+  </div>
+  <div>
+    <input type="text" name="description" placeholder="description"/>
+  </div>
+  <div>
+    <input type="text" name="genres" placeholder="genre, genre, genre">
+  </div>
+  <input type="submit" value="create" />
+</form>
+</body>
+</html>

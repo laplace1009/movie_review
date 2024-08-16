@@ -9,6 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
 import com.laplace.movie_review.util.TokenUnit
+import org.springframework.transaction.annotation.Transactional
 import java.time.ZoneId
 import java.util.*
 
@@ -18,6 +19,7 @@ class TokenService(
     private val jwtTokenProvider: JwtTokenProvider,
     private val accountRepository: AccountRepository,
 ) {
+    @Transactional
     fun generateToken(username: String, roles: List<String>, tokenUnit: TokenUnit): Pair<String, Date> {
         return jwtTokenProvider.generateToken(username, roles, tokenUnit)
     }
@@ -36,6 +38,7 @@ class TokenService(
         return UsernamePasswordAuthenticationToken(userDetails, "", userDetails.authorities)
     }
 
+    @Transactional(readOnly = true)
     fun getRefreshTokenByEmail(email: String): RefreshToken? {
         return refreshTokenRepository.findByEmail(email)
     }
@@ -48,6 +51,7 @@ class TokenService(
         return jwtTokenProvider.getRolesFromToken(token)
     }
 
+    @Transactional
     fun saveToken(email: String, token: String, expiresAt: Date): RefreshToken {
         val account = accountRepository.findByEmail(email)
         return refreshTokenRepository.save(
