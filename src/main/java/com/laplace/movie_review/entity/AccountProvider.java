@@ -1,5 +1,6 @@
 package com.laplace.movie_review.entity;
 
+import com.laplace.movie_review.dto.accountProvider.AccountProviderCreateDTO;
 import jakarta.persistence.*;
 
 @Entity
@@ -67,5 +68,9 @@ public class AccountProvider {
                 ", providerName='" + providerName + '\'' +
                 ", providerId='" + providerId + '\'' +
                 '}';
+    }
+
+    public AccountProviderCreateDTO toDto() {
+        return new AccountProviderCreateDTO(account.getUserId(), providerName, providerId);
     }
 }

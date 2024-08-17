@@ -1,5 +1,6 @@
 package com.laplace.movie_review.entity;
 
+import com.laplace.movie_review.dto.like.LikeCreateDTO;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -76,5 +77,9 @@ public class Like {
                 ", review=" + review +
                 ", createdAt=" + createdAt +
                 '}';
+    }
+
+    public LikeCreateDTO toDTO() {
+        return new LikeCreateDTO(account.getUserId(), review.getId());
     }
 }

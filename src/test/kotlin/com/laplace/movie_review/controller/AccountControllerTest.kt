@@ -1,11 +1,9 @@
 package com.laplace.movie_review.controller
 
 import com.laplace.movie_review.dto.account.AccountCreateDTO
-import com.laplace.movie_review.entity.AccountProvider
 import com.laplace.movie_review.service.AccountProviderService
 import com.laplace.movie_review.service.AccountService
 import com.laplace.movie_review.service.TokenService
-import com.laplace.movie_review.util.AuthProviderName
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired

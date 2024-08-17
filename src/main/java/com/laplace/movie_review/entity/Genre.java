@@ -51,7 +51,7 @@ public class Genre {
         this.movies = movies;
     }
 
-    public GenreModifyDTO toGenreModifyDTO() {
+    public GenreModifyDTO toDTO() {
         return new GenreModifyDTO(this.id, this.genreName);
     }
 }

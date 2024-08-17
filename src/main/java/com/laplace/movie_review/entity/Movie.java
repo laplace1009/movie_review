@@ -122,7 +122,7 @@ public class Movie {
         genre.getMovies().remove(this);
     }
 
-    public MovieCreateDTO toMovieCreateDTO() {
+    public MovieCreateDTO toDTO() {
         Set<String> genres = new HashSet<>();
         this.genres.forEach(genre -> genres.add(genre.getGenreName()));
 

@@ -1,5 +1,6 @@
 package com.laplace.movie_review.entity;
 
+import com.laplace.movie_review.dto.review.ReviewCreateDTO;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -110,5 +111,9 @@ public class Review {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public ReviewCreateDTO toDTO() {
+        return new ReviewCreateDTO(account.getUserId(), movie.getId(), rating, comment);
     }
 }
