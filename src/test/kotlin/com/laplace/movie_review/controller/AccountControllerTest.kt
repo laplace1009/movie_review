@@ -1,7 +1,9 @@
 package com.laplace.movie_review.controller
 
-import com.laplace.movie_review.dto.account.AccountDTO
-import com.laplace.movie_review.service.AuthService
+import com.laplace.movie_review.dto.account.AccountCreateDTO
+import com.laplace.movie_review.entity.AccountProvider
+import com.laplace.movie_review.service.AccountProviderService
+import com.laplace.movie_review.service.AccountService
 import com.laplace.movie_review.service.TokenService
 import com.laplace.movie_review.util.AuthProviderName
 import org.junit.jupiter.api.Test
@@ -14,17 +16,20 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 
-@WebMvcTest(AuthController::class)
+@WebMvcTest(AccountController::class)
 @AutoConfigureMockMvc(addFilters = false)
-class AuthControllerTest {
+class AccountControllerTest {
     @Autowired
     private lateinit var mockMvc: MockMvc
 
     @MockBean
-    private lateinit var authService: AuthService
+    private lateinit var accountService: AccountService
 
     @MockBean
     private lateinit var tokenService: TokenService
+
+    @MockBean
+    private lateinit var accountProviderService: AccountProviderService
 
     @Test
     fun `GET account should return user view`() {
@@ -42,9 +47,7 @@ class AuthControllerTest {
         val password = "1234"
 
 
-        Mockito.doNothing().`when`(authService).createLocalUser(
-            AccountDTO(username, email, password, AuthProviderName.LOCAL, null)
-        )
+        Mockito.`when`(accountService.createLocalUser(AccountCreateDTO(username, email, password))).thenReturn(1)
 
         mockMvc.perform(
             post("/account")

@@ -1,9 +1,7 @@
 package com.laplace.movie_review.service
 
-import com.laplace.movie_review.dto.account.AccountDTO
-import com.laplace.movie_review.entity.Account
-import com.laplace.movie_review.entity.AccountProvider
-import com.laplace.movie_review.repository.AccountProviderRepository
+import com.laplace.movie_review.dto.account.AccountCreateDTO
+import com.laplace.movie_review.dto.account.toEntity
 import com.laplace.movie_review.repository.AccountRepository
 import org.springframework.context.annotation.Lazy
 import org.springframework.security.authentication.BadCredentialsException
@@ -12,11 +10,11 @@ import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
-class AuthService(
+class AccountService(
     private val accountRepository: AccountRepository,
-    private val accountProviderRepository: AccountProviderRepository,
     @Lazy private val passwordEncoder: PasswordEncoder,
 ): UserDetailsService {
     override fun loadUserByUsername(email: String): UserDetails {
@@ -29,23 +27,10 @@ class AuthService(
             .build()
     }
 
-    fun createLocalUser(accountDTO: AccountDTO) {
+    @Transactional
+    fun createLocalUser(accountCreateDTO: AccountCreateDTO): Long {
         // 만약 이메일이 없다면 계정을 만듬
-        accountRepository.findByEmail(accountDTO.email) ?: accountDTO.run {
-            val account = Account(
-                username,
-                email,
-                passwordEncoder.encode(password)
-            )
-
-            val savedUser = accountRepository.save(account)
-            accountProviderRepository.save(
-                AccountProvider(
-                    savedUser,
-                    accountDTO.providerName.providerName,
-                    accountDTO.providerId
-                )
-            )
-        }
+        val account = accountRepository.findByEmail(accountCreateDTO.email) ?: accountCreateDTO.toEntity(passwordEncoder)
+        return accountRepository.save(account).userId
     }
 }

@@ -1,6 +1,6 @@
 package com.laplace.movie_review.controller
 
-import com.laplace.movie_review.service.AuthService
+import com.laplace.movie_review.service.AccountService
 import com.laplace.movie_review.service.TokenService
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -16,7 +16,7 @@ class MainControllerTest {
     private lateinit var mockMvc: MockMvc
 
     @MockBean
-    private lateinit var authService: AuthService
+    private lateinit var accountService: AccountService
 
     @MockBean
     private lateinit var tokenService: TokenService

@@ -3,7 +3,7 @@ package com.laplace.movie_review.config
 import com.laplace.movie_review.filter.JwtAuthenticationFilter
 import com.laplace.movie_review.service.CustomOAuth2UserService
 import com.laplace.movie_review.provider.JwtTokenProvider
-import com.laplace.movie_review.service.AuthService
+import com.laplace.movie_review.service.AccountService
 import com.laplace.movie_review.service.TokenService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
@@ -24,13 +24,13 @@ import com.laplace.movie_review.util.TokenUnit
 class SecurityConfig(
     private val oAuth2UserService: CustomOAuth2UserService,
     private val jwtAuthenticationFilter: JwtAuthenticationFilter,
-    private val authService: AuthService,
+    private val accountService: AccountService,
     private val tokenService: TokenService
 ) {
     @Bean
     fun authenticationProvider(passwordEncoder: PasswordEncoder): AuthenticationProvider {
         val authProvider = DaoAuthenticationProvider()
-        authProvider.setUserDetailsService(authService)
+        authProvider.setUserDetailsService(accountService)
         authProvider.setPasswordEncoder(passwordEncoder())
         return authProvider
     }
