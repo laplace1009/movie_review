@@ -21,6 +21,9 @@ public class Movie {
     @Column(columnDefinition = "TEXT")
     private String description;
 
+    @Column
+    private String director;
+
     @Column(name = "release_date", nullable = false, updatable = false)
     private LocalDateTime releaseDate;
 
@@ -37,9 +40,10 @@ public class Movie {
 
     public Movie() {}
 
-    public Movie(String title, String description, LocalDateTime releaseDate) {
+    public Movie(String title, String description, String director, LocalDateTime releaseDate) {
         this.title = title;
         this.description = description;
+        this.director = director;
         this.releaseDate = releaseDate;
     }
 
@@ -100,6 +104,14 @@ public class Movie {
         this.createdAt = createdAt;
     }
 
+    public String getDirector() {
+        return director;
+    }
+
+    public void setDirector(String director) {
+        this.director = director;
+    }
+
     public void addGenre(Genre genre) {
         this.genres.add(genre);
         genre.getMovies().add(this);
@@ -114,6 +126,6 @@ public class Movie {
         Set<String> genres = new HashSet<>();
         this.genres.forEach(genre -> genres.add(genre.getGenreName()));
 
-        return new MovieCreateDTO(this.title, this.description, this.releaseDate, genres);
+        return new MovieCreateDTO(this.title, this.description, this.director, this.releaseDate, genres);
     }
 }

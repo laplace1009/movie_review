@@ -6,11 +6,12 @@ import java.time.LocalDateTime
 data class MovieCreateDTO(
     val title: String,
     val description: String,
+    val director: String,
     val releaseDate: LocalDateTime,
     val genres: Set<String>,
 )
 
 fun MovieCreateDTO.toEntity(): Movie {
-    return Movie(this.title, this.description, this.releaseDate)
+    return Movie(title, description, director, releaseDate)
 }
 

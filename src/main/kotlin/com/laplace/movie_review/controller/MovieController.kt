@@ -24,8 +24,12 @@ class MovieController(private val movieService: MovieService) {
     }
 
     @PostMapping("/create")
-    fun createMovie(@RequestParam title: String, @RequestParam description: String, @RequestParam genres: String): String {
-        val movieDTO = MovieCreateDTO(title, description, LocalDateTime.now(), genres.split(", ").toSet())
+    fun createMovie(
+        @RequestParam title: String, @RequestParam description: String,
+        @RequestParam director: String, @RequestParam genres: String): String {
+        val movieDTO = MovieCreateDTO(
+            title, description, director, LocalDateTime.now(), genres.split(", ").toSet()
+        )
         val movie = movieService.createMovieWithGenres(movieDTO)
 
         return "create ${movie.title} review successful"
