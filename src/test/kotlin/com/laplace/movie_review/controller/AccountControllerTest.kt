@@ -30,7 +30,7 @@ class AccountControllerTest {
     private lateinit var accountProviderService: AccountProviderService
 
     @Test
-    fun `GET account should return user view`() {
+    fun `GET account should return account view`() {
         mockMvc.perform(get("/account"))
             .andExpect{
                 status().isOk

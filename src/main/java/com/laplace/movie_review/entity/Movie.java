@@ -25,7 +25,7 @@ public class Movie {
     private String director;
 
     @Column(name = "release_date", nullable = false, updatable = false)
-    private LocalDateTime releaseDate;
+    private String releaseDate;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
@@ -40,7 +40,7 @@ public class Movie {
 
     public Movie() {}
 
-    public Movie(String title, String description, String director, LocalDateTime releaseDate) {
+    public Movie(String title, String description, String director, String releaseDate) {
         this.title = title;
         this.description = description;
         this.director = director;
@@ -88,11 +88,11 @@ public class Movie {
         this.description = description;
     }
 
-    public LocalDateTime getReleaseDate() {
+    public String getReleaseDate() {
         return releaseDate;
     }
 
-    public void setReleaseDate(LocalDateTime releaseDate) {
+    public void setReleaseDate(String releaseDate) {
         this.releaseDate = releaseDate;
     }
 

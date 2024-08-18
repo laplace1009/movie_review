@@ -2,6 +2,8 @@ package com.laplace.movie_review.controller
 
 import com.laplace.movie_review.dto.movie.*
 import com.laplace.movie_review.service.MovieService
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.ModelAndView
 import java.time.LocalDateTime
@@ -26,12 +28,12 @@ class MovieController(private val movieService: MovieService) {
     @PostMapping("/create")
     fun createMovie(
         @RequestParam title: String, @RequestParam description: String,
-        @RequestParam director: String, @RequestParam genres: String): String {
+        @RequestParam director: String, @RequestParam genres: String): ResponseEntity<MovieCreateDTO> {
         val movieDTO = MovieCreateDTO(
-            title, description, director, LocalDateTime.now(), genres.split(", ").toSet()
+            title, description, director, "2024-01-01", genres.split(", ").toSet()
         )
         val movie = movieService.createMovieWithGenres(movieDTO)
 
-        return "create ${movie.title} review successful"
+        return ResponseEntity.status(HttpStatus.CREATED).body(movieDTO)
     }
 }

@@ -7,7 +7,7 @@ data class MovieCreateDTO(
     val title: String,
     val description: String,
     val director: String,
-    val releaseDate: LocalDateTime,
+    val releaseDate: String,
     val genres: Set<String>,
 )
 

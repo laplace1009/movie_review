@@ -5,6 +5,8 @@ import com.laplace.movie_review.dto.accountProvider.AccountProviderCreateDTO
 import com.laplace.movie_review.service.AccountProviderService
 import com.laplace.movie_review.service.AccountService
 import com.laplace.movie_review.util.AuthProviderName
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
 
@@ -24,10 +26,11 @@ class AccountController(
         @RequestParam("userName") username: String,
         @RequestParam("email") email: String,
         @RequestParam("password") password: String
-    ): String {
-        val accountId = accountService.createLocalUser(AccountCreateDTO(username, email, password))
+    ): ResponseEntity<AccountCreateDTO> {
+        val accountCreateDTO = AccountCreateDTO(username, email, password)
+        val accountId = accountService.createLocalUser(accountCreateDTO)
         accountProviderService.createLocalProvider(AccountProviderCreateDTO(accountId, AuthProviderName.LOCAL.providerName, ""))
-        return "User registered: $username"
+        return ResponseEntity.status(HttpStatus.CREATED).body(accountCreateDTO)
     }
 
     @GetMapping("/login")
