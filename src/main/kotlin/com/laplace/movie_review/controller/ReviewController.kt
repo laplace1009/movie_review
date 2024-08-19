@@ -38,7 +38,7 @@ class ReviewController(
         @RequestParam rating: Float,
         @RequestParam comment: String
     ): ResponseEntity<Unit> {
-        val accountInfoDTO = accountService.getCurrentUser()
+        val accountInfoDTO = accountService.getCurrentAccount()
         val reviewCreateDTO = ReviewCreateDTO(accountInfoDTO.email, title, rating, comment)
         reviewService.createReview(reviewCreateDTO)
         return ResponseEntity.status(HttpStatus.SEE_OTHER).location(URI.create("/")).build()

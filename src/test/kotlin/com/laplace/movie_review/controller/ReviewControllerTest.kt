@@ -40,7 +40,7 @@ class ReviewControllerTest {
     fun `POST review should return review view`() {
         val accountInfoDTO = AccountInfoDTO("test@example.com")
 
-        Mockito.`when`(accountService.getCurrentUser()).thenReturn(accountInfoDTO)
+        Mockito.`when`(accountService.getCurrentAccount()).thenReturn(accountInfoDTO)
 
         val uri = UriComponentsBuilder.fromUriString("/review/create")
             .queryParam("title", "Test Title")
