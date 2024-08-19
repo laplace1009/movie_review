@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.net.URI
 
 @RestController
 @RequestMapping(("/like"))
@@ -16,9 +17,9 @@ class LikeController(private val likeService: LikeService) {
     fun addLike(
         @RequestParam accountId: Long,
         @RequestParam reviewId: Long
-    ): ResponseEntity<LikeCreateDTO> {
+    ): ResponseEntity<Unit> {
         val likeCreateDTO = LikeCreateDTO(accountId, reviewId)
         likeService.createLike(likeCreateDTO)
-        return ResponseEntity.status(HttpStatus.CREATED).body(likeCreateDTO)
+        return ResponseEntity.status(HttpStatus.SEE_OTHER).location(URI.create("/")).build()
     }
 }
