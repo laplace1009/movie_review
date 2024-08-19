@@ -9,6 +9,8 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.servlet.view.RedirectView
+import java.net.URI
 
 @Controller
 class AccountController(
@@ -26,11 +28,11 @@ class AccountController(
         @RequestParam("userName") username: String,
         @RequestParam("email") email: String,
         @RequestParam("password") password: String
-    ): ResponseEntity<AccountCreateDTO> {
+    ): ResponseEntity<Unit> {
         val accountCreateDTO = AccountCreateDTO(username, email, password)
         val accountId = accountService.createLocalUser(accountCreateDTO)
         accountProviderService.createLocalProvider(AccountProviderCreateDTO(accountId, AuthProviderName.LOCAL.providerName, ""))
-        return ResponseEntity.status(HttpStatus.CREATED).body(accountCreateDTO)
+        return ResponseEntity.status(HttpStatus.SEE_OTHER).location(URI("/login")).build()
     }
 
     @GetMapping("/login")

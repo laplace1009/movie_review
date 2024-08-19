@@ -2,8 +2,12 @@ package com.laplace.movie_review.service
 
 import com.laplace.movie_review.dto.account.AccountCreateDTO
 import com.laplace.movie_review.dto.account.toEntity
+import com.laplace.movie_review.dto.accountProvider.AccountProviderCreateDTO
+import com.laplace.movie_review.entity.AccountProvider
 import com.laplace.movie_review.repository.AccountRepository
 import org.springframework.context.annotation.Lazy
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.security.authentication.BadCredentialsException
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails

@@ -32,7 +32,7 @@ class MovieController(private val movieService: MovieService) {
         val movieDTO = MovieCreateDTO(
             title, description, director, "2024-01-01", genres.split(", ").toSet()
         )
-        val movie = movieService.createMovieWithGenres(movieDTO)
+        movieService.createMovieWithGenres(movieDTO)
 
         return ResponseEntity.status(HttpStatus.CREATED).body(movieDTO)
     }
