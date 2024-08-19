@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController
 @RestController
 @RequestMapping(("/like"))
 class LikeController(private val likeService: LikeService) {
-    @PostMapping
+    @PostMapping("/create")
     fun addLike(
         @RequestParam accountId: Long,
         @RequestParam reviewId: Long

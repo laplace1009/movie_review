@@ -5,5 +5,14 @@
 </head>
 <body>
 <h1>Movie, <span th:text="${review}">Movie</span></h1>
+<form th:action="@{/like/create}" method="post">
+    <div>
+        <input type="text" name="accountId" placeholder="Account Id"/>
+    </div>
+    <div>
+        <input type="text" name="reviewId" placeholder="movie Id"/>
+    </div>
+    <input type="submit" value="create" />
+</form>
 </body>
 </html>
