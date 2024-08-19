@@ -6,6 +6,7 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.ModelAndView
+import java.net.URI
 import java.time.LocalDateTime
 
 @RestController
@@ -28,12 +29,12 @@ class MovieController(private val movieService: MovieService) {
     @PostMapping("/create")
     fun createMovie(
         @RequestParam title: String, @RequestParam description: String,
-        @RequestParam director: String, @RequestParam genres: String): ResponseEntity<MovieCreateDTO> {
+        @RequestParam director: String, @RequestParam genres: String): ResponseEntity<Unit> {
         val movieDTO = MovieCreateDTO(
             title, description, director, "2024-01-01", genres.split(", ").toSet()
         )
         movieService.createMovieWithGenres(movieDTO)
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(movieDTO)
+        return ResponseEntity.status(HttpStatus.SEE_OTHER).location(URI.create("/")).build()
     }
 }

@@ -4,4 +4,5 @@ import com.laplace.movie_review.entity.Movie
 import org.springframework.data.jpa.repository.JpaRepository
 
 interface MovieRepository: JpaRepository<Movie, Long> {
+    fun findMovieByTitle(title: String): Movie?
 }
