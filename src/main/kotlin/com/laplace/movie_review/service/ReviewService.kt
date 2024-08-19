@@ -17,13 +17,11 @@ class ReviewService(
 ) {
     @Transactional
     fun createReview(reviewCreateDTO: ReviewCreateDTO): Review {
-        val account = accountRepository.findById(reviewCreateDTO.accountId).orElseThrow {
-            throw IllegalStateException("Not exist account by ${reviewCreateDTO.accountId}Id")
-        }
+        val account = accountRepository.findByEmail(reviewCreateDTO.email)
+            ?: throw IllegalStateException("Not found account by ${reviewCreateDTO.email}")
 
-        val movie = movieRepository.findById(reviewCreateDTO.movieId).orElseThrow {
-            throw IllegalStateException("Not exist movie by ${reviewCreateDTO.movieId}Id")
-        }
+        val movie = movieRepository.findMovieByTitle(reviewCreateDTO.title)
+            ?: throw IllegalStateException("Not found movie by ${reviewCreateDTO.title}")
 
         val review = reviewCreateDTO.toReviewEntity(account, movie)
 

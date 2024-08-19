@@ -114,6 +114,6 @@ public class Review {
     }
 
     public ReviewCreateDTO toDTO() {
-        return new ReviewCreateDTO(account.getUserId(), movie.getId(), rating, comment);
+        return new ReviewCreateDTO(account.getEmail(), movie.getTitle(), rating, comment);
     }
 }

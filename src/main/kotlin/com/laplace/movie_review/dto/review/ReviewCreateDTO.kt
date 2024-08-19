@@ -5,8 +5,8 @@ import com.laplace.movie_review.entity.Movie
 import com.laplace.movie_review.entity.Review
 
 data class ReviewCreateDTO(
-    val accountId: Long,
-    val movieId: Long,
+    val email: String,
+    val title: String,
     val rating: Float,
     val comment: String
 )
