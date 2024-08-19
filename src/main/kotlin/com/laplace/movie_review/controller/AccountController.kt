@@ -1,6 +1,7 @@
 package com.laplace.movie_review.controller
 
 import com.laplace.movie_review.dto.account.AccountCreateDTO
+import com.laplace.movie_review.dto.account.AccountInfoDTO
 import com.laplace.movie_review.dto.accountProvider.AccountProviderCreateDTO
 import com.laplace.movie_review.service.AccountProviderService
 import com.laplace.movie_review.service.AccountService
@@ -9,7 +10,6 @@ import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.stereotype.Controller
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.servlet.view.RedirectView
 import java.net.URI
 
 @Controller

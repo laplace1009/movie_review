@@ -5,14 +5,14 @@
     <title>account</title>
 </head>
 <body>
-<form method="post" action="/account">
+<form th:action="@{/account}" method="post">
     <input name="userName" type="text" id="userName">
     <label for="userName">username</label>
     <input name="email" type="email" id="email">
     <label for="email">email</label>
     <input name="password" type="password" id="password">
     <label for="password">password</label>
-    <button>register</button>
+    <input type="submit" value="register"/>
 </form>
 
 </body>
