@@ -122,10 +122,15 @@ public class Movie {
         genre.getMovies().remove(this);
     }
 
+    public Set<Genre> getGenres() {
+        return genres;
+    }
+
     public MovieCreateDTO toDTO() {
         Set<String> genres = new HashSet<>();
         this.genres.forEach(genre -> genres.add(genre.getGenreName()));
 
         return new MovieCreateDTO(this.title, this.description, this.director, this.releaseDate, genres);
     }
+
 }

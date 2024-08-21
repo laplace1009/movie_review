@@ -7,7 +7,6 @@ import com.laplace.movie_review.entity.AccountProvider
 import com.laplace.movie_review.repository.AccountProviderRepository
 import com.laplace.movie_review.repository.AccountRepository
 import org.junit.jupiter.api.Assertions.assertThrows
-import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
@@ -18,7 +17,7 @@ import java.util.*
 import kotlin.test.assertEquals
 
 @SpringBootTest
-class AccountProviderTest {
+class AccountProviderServiceTest {
     @Mock
     private lateinit var accountRepository: AccountRepository
 

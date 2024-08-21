@@ -19,6 +19,9 @@ class MovieService(
 ) {
     @Transactional
     fun createMovieWithGenres(movieCreateDTO: MovieCreateDTO): Movie {
+        movieRepository.findMovieByTitle(movieCreateDTO.title)?.let {
+            throw IllegalStateException("same movie exist: ${movieCreateDTO.title}")
+        }
         val movie = movieCreateDTO.toEntity()
         val existGenre = genreRepository.findByGenreNameIn(movieCreateDTO.genres)?.toSet() ?: setOf()
 
