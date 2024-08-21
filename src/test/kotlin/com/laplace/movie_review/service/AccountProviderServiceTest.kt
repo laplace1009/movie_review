@@ -7,6 +7,7 @@ import com.laplace.movie_review.entity.AccountProvider
 import com.laplace.movie_review.repository.AccountProviderRepository
 import com.laplace.movie_review.repository.AccountRepository
 import org.junit.jupiter.api.Assertions.assertThrows
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.mockito.InjectMocks
 import org.mockito.Mock
@@ -27,10 +28,16 @@ class AccountProviderServiceTest {
     @InjectMocks
     private lateinit var accountProviderService: AccountProviderService
 
+    private lateinit var accountProviderCreateDTO: AccountProviderCreateDTO
+
+    @BeforeEach
+    fun setUp() {
+        accountProviderCreateDTO = AccountProviderCreateDTO(1L, "LOCAL", "")
+    }
+
     @Test
     fun `createLocalProvider should return AccountProvider`() {
         val account = Account("test", "test@test.com", "1234").apply { userId = 1L }
-        val accountProviderCreateDTO = AccountProviderCreateDTO(1L, "LOCAL", "")
         val accountProvider = accountProviderCreateDTO.toEntity(account).apply {
             id = 1L
         }
@@ -43,8 +50,6 @@ class AccountProviderServiceTest {
 
     @Test
     fun `createLocalProvider should throw exception when account does not found`() {
-        val accountProviderCreateDTO = AccountProviderCreateDTO(1L, "LOCAL", "")
-
         `when`(accountProviderRepository.findById(accountProviderCreateDTO.accountId)).thenReturn(Optional.empty())
 
         val exception = assertThrows(IllegalStateException::class.java) {
