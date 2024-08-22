@@ -7,6 +7,7 @@ import com.laplace.movie_review.repository.AccountRepository
 import com.laplace.movie_review.repository.LikeRepository
 import com.laplace.movie_review.repository.ReviewRepository
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 
 @Service
 class LikeService(
@@ -14,6 +15,7 @@ class LikeService(
     private val reviewRepository: ReviewRepository,
     private val likeRepository: LikeRepository
 ) {
+    @Transactional
     fun createLike(likeCreateDTO: LikeCreateDTO): Like {
         val account = accountRepository.findById(likeCreateDTO.accountId).orElseThrow {
             throw IllegalStateException("Invalid account id: ${likeCreateDTO.accountId}")

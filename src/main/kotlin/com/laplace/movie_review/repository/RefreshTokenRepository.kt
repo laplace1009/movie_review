@@ -11,6 +11,6 @@ interface RefreshTokenRepository: JpaRepository<RefreshToken, Long> {
     fun findByAccount(account: Account): RefreshToken?
     fun findByAccountId(accountId: Long): RefreshToken?
 
-    @Query("SELECT (rt.token) FROM RefreshToken rt INNER JOIN rt.account a WHERE a.email = :email")
+    @Query("SELECT rt FROM RefreshToken rt INNER JOIN rt.account a WHERE a.email = :email")
     fun findByEmail(email: String): RefreshToken?
 }

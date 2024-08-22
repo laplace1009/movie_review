@@ -1,5 +1,7 @@
 package com.laplace.movie_review.service
 
+import com.laplace.movie_review.dto.token.RefreshTokenSaveDTO
+import com.laplace.movie_review.dto.token.toEntity
 import com.laplace.movie_review.entity.RefreshToken
 import com.laplace.movie_review.provider.JwtTokenProvider
 import com.laplace.movie_review.repository.AccountRepository
@@ -10,8 +12,8 @@ import org.springframework.security.core.Authentication
 import org.springframework.stereotype.Service
 import com.laplace.movie_review.util.TokenUnit
 import org.springframework.transaction.annotation.Transactional
-import java.time.ZoneId
 import java.util.*
+import javax.security.auth.login.AccountNotFoundException
 
 @Service
 class TokenService(
@@ -19,7 +21,6 @@ class TokenService(
     private val jwtTokenProvider: JwtTokenProvider,
     private val accountRepository: AccountRepository,
 ) {
-    @Transactional
     fun generateToken(username: String, roles: List<String>, tokenUnit: TokenUnit): Pair<String, Date> {
         return jwtTokenProvider.generateToken(username, roles, tokenUnit)
     }
@@ -52,10 +53,8 @@ class TokenService(
     }
 
     @Transactional
-    fun saveToken(email: String, token: String, expiresAt: Date): RefreshToken {
-        val account = accountRepository.findByEmail(email)
-        return refreshTokenRepository.save(
-            RefreshToken(account, token, expiresAt.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime())
-        )
+    fun saveToken(dto: RefreshTokenSaveDTO): RefreshToken {
+        val account = accountRepository.findByEmail(dto.email) ?: throw AccountNotFoundException("${dto.email} not found")
+        return refreshTokenRepository.save(dto.toEntity(account))
     }
 }

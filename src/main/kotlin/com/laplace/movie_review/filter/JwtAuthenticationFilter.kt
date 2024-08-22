@@ -1,5 +1,6 @@
 package com.laplace.movie_review.filter
 
+import com.laplace.movie_review.dto.token.RefreshTokenSaveDTO
 import com.laplace.movie_review.service.TokenService
 import io.jsonwebtoken.ExpiredJwtException
 import io.jsonwebtoken.JwtException
@@ -51,6 +52,7 @@ class JwtAuthenticationFilter(
                     try {
                         if (tokenService.validateToken(entity.token)) {
                             val roles = user.authorities.map { it.authority }
+                            response.addCookie(Cookie(TokenUnit.REFRESH_TOKEN.token, entity.token))
                             generateAndAddTokenToResponse(response, username, roles, TokenUnit.ACCESS_TOKEN)
                         }
                     } catch (ex: JwtException) {
@@ -88,6 +90,7 @@ class JwtAuthenticationFilter(
         if (ex is ExpiredJwtException) {
             val expiredJwtEx = ex as ExpiredJwtException
             val username = expiredJwtEx.claims.subject
+            println(username)
             val roles = listOf(Roles.ADMIN.role)
             generateAndAddTokenToResponse(response, username, roles, TokenUnit.REFRESH_TOKEN)
             generateAndAddTokenToResponse(response, username, roles, TokenUnit.ACCESS_TOKEN)
@@ -100,8 +103,9 @@ class JwtAuthenticationFilter(
         tokenUnit: TokenUnit
     ) {
         val (token, expiresAt) = tokenService.generateToken(username, roles, tokenUnit)
+        val tokenDto = RefreshTokenSaveDTO(username, token, expiresAt)
         if (tokenUnit == TokenUnit.REFRESH_TOKEN) {
-            tokenService.saveToken(username, token, expiresAt)
+            tokenService.saveToken(tokenDto)
         }
         response.addCookie(Cookie(tokenUnit.token, token))
     }
