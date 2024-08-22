@@ -122,6 +122,10 @@ public class Movie {
         genre.getMovies().remove(this);
     }
 
+    public void setGenres(Set<Genre> genres) {
+        this.genres = genres;
+    }
+
     public Set<Genre> getGenres() {
         return genres;
     }

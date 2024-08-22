@@ -1,7 +1,7 @@
 package com.laplace.movie_review.service
 
 import com.laplace.movie_review.dto.review.ReviewCreateDTO
-import com.laplace.movie_review.dto.review.toReviewEntity
+import com.laplace.movie_review.dto.review.toEntity
 import com.laplace.movie_review.entity.Review
 import com.laplace.movie_review.repository.AccountRepository
 import com.laplace.movie_review.repository.MovieRepository
@@ -23,7 +23,7 @@ class ReviewService(
         val movie = movieRepository.findMovieByTitle(reviewCreateDTO.title)
             ?: throw IllegalStateException("Not found movie by ${reviewCreateDTO.title}")
 
-        val review = reviewCreateDTO.toReviewEntity(account, movie)
+        val review = reviewCreateDTO.toEntity(account, movie)
 
         return reviewRepository.save(review)
     }

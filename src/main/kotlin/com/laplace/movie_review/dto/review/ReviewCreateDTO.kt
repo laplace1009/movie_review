@@ -11,6 +11,6 @@ data class ReviewCreateDTO(
     val comment: String
 )
 
-fun ReviewCreateDTO.toReviewEntity(account: Account, movie: Movie): Review {
+fun ReviewCreateDTO.toEntity(account: Account, movie: Movie): Review {
     return Review(account, movie, rating, comment)
 }
