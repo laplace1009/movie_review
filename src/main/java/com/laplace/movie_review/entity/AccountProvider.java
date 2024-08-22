@@ -8,6 +8,7 @@ import jakarta.persistence.*;
 public class AccountProvider {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "account_provider_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -71,6 +72,6 @@ public class AccountProvider {
     }
 
     public AccountProviderCreateDTO toDto() {
-        return new AccountProviderCreateDTO(account.getUserId(), providerName, providerId);
+        return new AccountProviderCreateDTO(account.getId(), providerName, providerId);
     }
 }

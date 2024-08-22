@@ -35,12 +35,12 @@ public class AccountTest {
         String email = "test@test.com";
         String password = "1234";
 
-        account.setUserId(id);
+        account.setId(id);
         account.setUsername(username);
         account.setEmail(email);
         account.setPassword(password);
 
-        assertEquals(id, account.getUserId());
+        assertEquals(id, account.getId());
         assertEquals(username, account.getUsername());
         assertEquals(email, account.getEmail());
         assertEquals(password, account.getPassword());

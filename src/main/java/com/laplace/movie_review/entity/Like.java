@@ -80,6 +80,6 @@ public class Like {
     }
 
     public LikeCreateDTO toDTO() {
-        return new LikeCreateDTO(account.getUserId(), review.getId());
+        return new LikeCreateDTO(account.getId(), review.getId());
     }
 }

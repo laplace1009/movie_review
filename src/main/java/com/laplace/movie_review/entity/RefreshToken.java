@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 public class RefreshToken {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "token_id")
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)

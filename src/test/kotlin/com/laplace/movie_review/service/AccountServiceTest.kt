@@ -65,7 +65,7 @@ class AccountServiceTest {
         `when`(accountRepository.findByEmail(accountCreateDTO.email)).thenReturn(null)
         `when`(passwordEncoder.encode(accountCreateDTO.password)).thenReturn("encode")
         val savedAccount = Account(username, email, "encode").apply {
-            userId = 1
+            id = 1
         }
         `when`(accountRepository.save(any(Account::class.java))).thenReturn(savedAccount)
         val userId = accountService.createLocalUser(accountCreateDTO)

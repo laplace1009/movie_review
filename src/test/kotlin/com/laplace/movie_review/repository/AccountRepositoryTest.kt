@@ -52,7 +52,7 @@ class AccountRepositoryTest {
         val newAccount = Account("new", "new@test.com", "1234")
         val savedAccount = accountRepository.save(newAccount)
 
-        val foundAccount = accountRepository.findById(savedAccount.userId)
+        val foundAccount = accountRepository.findById(savedAccount.id)
         assertTrue(foundAccount.isPresent)
         assertEquals("new", foundAccount.get().username)
         assertEquals("new@test.com", foundAccount.get().email)

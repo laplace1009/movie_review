@@ -37,7 +37,7 @@ class AccountProviderServiceTest {
 
     @Test
     fun `createLocalProvider should return AccountProvider`() {
-        val account = Account("test", "test@test.com", "1234").apply { userId = 1L }
+        val account = Account("test", "test@test.com", "1234").apply { id = 1L }
         val accountProvider = accountProviderCreateDTO.toEntity(account).apply {
             id = 1L
         }

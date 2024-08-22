@@ -33,7 +33,7 @@ class AccountService(
     fun createLocalUser(accountCreateDTO: AccountCreateDTO): Long {
         // 만약 이메일이 없다면 계정을 만듬
         val account = accountRepository.findByEmail(accountCreateDTO.email) ?: accountCreateDTO.toEntity(passwordEncoder)
-        return accountRepository.save(account).userId
+        return accountRepository.save(account).id
     }
 
     fun getCurrentAccount(): AccountInfoDTO {

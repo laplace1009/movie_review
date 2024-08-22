@@ -39,12 +39,12 @@ public class Account {
         createdAt = LocalDateTime.now();
     }
 
-    public Long getUserId() {
+    public Long getId() {
         return id;
     }
 
-    public void setUserId(Long userId) {
-        this.id = userId;
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
