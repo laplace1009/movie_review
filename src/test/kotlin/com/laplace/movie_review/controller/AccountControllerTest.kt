@@ -1,6 +1,6 @@
 package com.laplace.movie_review.controller
 
-import com.laplace.movie_review.dto.account.AccountCreateDTO
+import com.laplace.movie_review.dto.account.AccountLocalCreateDTO
 import com.laplace.movie_review.service.AccountProviderService
 import com.laplace.movie_review.service.AccountService
 import com.laplace.movie_review.service.TokenService
@@ -45,7 +45,7 @@ class AccountControllerTest {
         val password = "1234"
 
 
-        Mockito.`when`(accountService.createLocalUser(AccountCreateDTO(username, email, password))).thenReturn(1)
+        Mockito.`when`(accountService.createLocalUser(AccountLocalCreateDTO(username, email, password))).thenReturn(1)
 
         mockMvc.perform(
             post("/account")

@@ -53,8 +53,8 @@ class TokenService(
     }
 
     @Transactional
-    fun saveToken(dto: RefreshTokenSaveDTO): RefreshToken {
+    fun saveToken(dto: RefreshTokenSaveDTO): RefreshTokenSaveDTO {
         val account = accountRepository.findByEmail(dto.email) ?: throw AccountNotFoundException("${dto.email} not found")
-        return refreshTokenRepository.save(dto.toEntity(account))
+        return refreshTokenRepository.save(dto.toEntity(account)).toDto()
     }
 }

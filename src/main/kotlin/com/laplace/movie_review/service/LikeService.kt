@@ -2,7 +2,6 @@ package com.laplace.movie_review.service
 
 import com.laplace.movie_review.dto.like.LikeCreateDTO
 import com.laplace.movie_review.dto.like.toEntity
-import com.laplace.movie_review.entity.Like
 import com.laplace.movie_review.repository.AccountRepository
 import com.laplace.movie_review.repository.LikeRepository
 import com.laplace.movie_review.repository.ReviewRepository
@@ -16,7 +15,7 @@ class LikeService(
     private val likeRepository: LikeRepository
 ) {
     @Transactional
-    fun createLike(likeCreateDTO: LikeCreateDTO): Like {
+    fun createLike(likeCreateDTO: LikeCreateDTO): LikeCreateDTO {
         val account = accountRepository.findById(likeCreateDTO.accountId).orElseThrow {
             throw IllegalStateException("Invalid account id: ${likeCreateDTO.accountId}")
         }
@@ -25,8 +24,6 @@ class LikeService(
             throw IllegalStateException("Invalid review id: ${likeCreateDTO.reviewId}")
         }
 
-        val like = likeRepository.save(likeCreateDTO.toEntity(account, review))
-
-        return like
+        return likeRepository.save(likeCreateDTO.toEntity(account, review)).toDTO()
     }
 }

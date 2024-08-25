@@ -38,7 +38,7 @@ class LikeControllerTest {
         val movie = Movie("dune", "dune dune", "dev", "2024-01-01")
         val review = Review(account, movie, 4.5f, "good movie")
 
-        Mockito.`when`(likeService.createLike(likeCreateDTO)).thenReturn(likeCreateDTO.toEntity(account, review))
+        Mockito.`when`(likeService.createLike(likeCreateDTO)).thenReturn(likeCreateDTO)
         mockMvc.perform(
             MockMvcRequestBuilders.post("/like")
                 .param("accountId", accountId.toString())

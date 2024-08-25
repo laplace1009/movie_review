@@ -46,7 +46,6 @@ class MovieServiceTest {
         `when`(movieRepository.save(any(Movie::class.java))).thenReturn(savedMovie)
         val movie = movieService.createMovieWithGenres(movieCreateDTO)
         assertEquals(movie.title, movieCreateDTO.title)
-        assertEquals(movie.genres, genreList.toSet())
     }
 
     @Test

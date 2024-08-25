@@ -56,8 +56,7 @@ class LikeServiceTest {
 
         val savedLike = likeService.createLike(likeCreateDTO)
 
-        assertEquals(savedLike.account.email, "test@test.com")
-        assertEquals(savedLike.review.rating, 4.5f)
+        assertEquals(savedLike.reviewId, 1L)
     }
 
     @Test

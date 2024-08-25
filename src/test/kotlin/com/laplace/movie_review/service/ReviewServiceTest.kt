@@ -60,8 +60,8 @@ class ReviewServiceTest {
 
         val savedReview = reviewService.createReview(reviewCreateDTO)
 
-        assertEquals(savedReview.movie.title, "dune")
-        assertEquals(savedReview.account.email, "test@test.com")
+        assertEquals(savedReview.title, "dune")
+        assertEquals(savedReview.email, "test@test.com")
         assertEquals(savedReview.rating, 4.5f)
     }
 

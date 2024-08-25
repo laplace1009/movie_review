@@ -1,7 +1,6 @@
 package com.laplace.movie_review.controller
 
-import com.laplace.movie_review.dto.account.AccountCreateDTO
-import com.laplace.movie_review.dto.account.AccountInfoDTO
+import com.laplace.movie_review.dto.account.AccountLocalCreateDTO
 import com.laplace.movie_review.dto.accountProvider.AccountProviderCreateDTO
 import com.laplace.movie_review.service.AccountProviderService
 import com.laplace.movie_review.service.AccountService
@@ -29,8 +28,8 @@ class AccountController(
         @RequestParam("email") email: String,
         @RequestParam("password") password: String
     ): ResponseEntity<Unit> {
-        val accountCreateDTO = AccountCreateDTO(username, email, password)
-        val accountId = accountService.createLocalUser(accountCreateDTO)
+        val accountLocalCreateDTO = AccountLocalCreateDTO(username, email, password)
+        val accountId = accountService.createLocalUser(accountLocalCreateDTO)
         accountProviderService.createLocalProvider(AccountProviderCreateDTO(accountId, AuthProviderName.LOCAL.providerName, ""))
         return ResponseEntity.status(HttpStatus.SEE_OTHER).location(URI("/login")).build()
     }

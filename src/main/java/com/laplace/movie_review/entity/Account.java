@@ -1,6 +1,6 @@
 package com.laplace.movie_review.entity;
 
-import com.laplace.movie_review.dto.account.AccountCreateDTO;
+import com.laplace.movie_review.dto.account.AccountLocalCreateDTO;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -90,7 +90,7 @@ public class Account {
                 '}';
     }
 
-    public AccountCreateDTO toDto() {
-        return new AccountCreateDTO(username, email, password);
+    public AccountLocalCreateDTO toDto() {
+        return new AccountLocalCreateDTO(username, email, password);
     }
 }

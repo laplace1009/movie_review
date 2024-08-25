@@ -18,7 +18,7 @@ class MovieService(
     private val genreRepository: GenreRepository
 ) {
     @Transactional
-    fun createMovieWithGenres(movieCreateDTO: MovieCreateDTO): Movie {
+    fun createMovieWithGenres(movieCreateDTO: MovieCreateDTO): MovieCreateDTO {
         movieRepository.findMovieByTitle(movieCreateDTO.title)?.let {
             throw IllegalStateException("same movie exist: ${movieCreateDTO.title}")
         }
@@ -36,11 +36,11 @@ class MovieService(
             genreRepository.save(genre)
             movie.addGenre(genre)
         }
-        return movieRepository.save(movie)
+        return movieRepository.save(movie).toDTO()
     }
 
     @Transactional
-    fun modifyGenreToMovie(genreModifyDTO: GenreModifyDTO, actionType: ActionType): Movie {
+    fun modifyGenreToMovie(genreModifyDTO: GenreModifyDTO, actionType: ActionType): GenreModifyDTO {
         val storedMovie = movieRepository.findById(genreModifyDTO.id).orElseThrow {
             throw IllegalStateException("Movie not found with id: ${genreModifyDTO.id}")
         }
@@ -56,6 +56,8 @@ class MovieService(
             }
         }
 
-        return movieRepository.save(storedMovie)
+        movieRepository.save(storedMovie)
+
+        return genreModifyDTO
     }
 }

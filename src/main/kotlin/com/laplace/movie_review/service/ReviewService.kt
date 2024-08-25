@@ -2,7 +2,6 @@ package com.laplace.movie_review.service
 
 import com.laplace.movie_review.dto.review.ReviewCreateDTO
 import com.laplace.movie_review.dto.review.toEntity
-import com.laplace.movie_review.entity.Review
 import com.laplace.movie_review.repository.AccountRepository
 import com.laplace.movie_review.repository.MovieRepository
 import com.laplace.movie_review.repository.ReviewRepository
@@ -16,7 +15,7 @@ class ReviewService(
     private val reviewRepository: ReviewRepository
 ) {
     @Transactional
-    fun createReview(reviewCreateDTO: ReviewCreateDTO): Review {
+    fun createReview(reviewCreateDTO: ReviewCreateDTO): ReviewCreateDTO {
         val account = accountRepository.findByEmail(reviewCreateDTO.email)
             ?: throw IllegalStateException("Not found account by ${reviewCreateDTO.email}")
 
@@ -25,7 +24,7 @@ class ReviewService(
 
         val review = reviewCreateDTO.toEntity(account, movie)
 
-        return reviewRepository.save(review)
+        return reviewRepository.save(review).toDTO()
     }
 
     @Transactional

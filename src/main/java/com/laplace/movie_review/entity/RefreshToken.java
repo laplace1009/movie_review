@@ -1,8 +1,11 @@
 package com.laplace.movie_review.entity;
 
+import com.laplace.movie_review.dto.token.RefreshTokenSaveDTO;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Date;
 
 @Entity
 @Table(name = "refresh_tokens")
@@ -87,5 +90,13 @@ public class RefreshToken {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    public RefreshTokenSaveDTO toDto() {
+        return new RefreshTokenSaveDTO(
+                this.account.getEmail(),
+                this.token,
+                Date.from(this.expiresAt.atZone(ZoneId.systemDefault()).toInstant())
+        );
     }
 }

@@ -1,6 +1,6 @@
 package com.laplace.movie_review.service
 
-import com.laplace.movie_review.dto.account.AccountCreateDTO
+import com.laplace.movie_review.dto.account.AccountLocalCreateDTO
 import com.laplace.movie_review.dto.account.AccountInfoDTO
 import com.laplace.movie_review.dto.account.toEntity
 import com.laplace.movie_review.repository.AccountRepository
@@ -30,9 +30,9 @@ class AccountService(
     }
 
     @Transactional
-    fun createLocalUser(accountCreateDTO: AccountCreateDTO): Long {
+    fun createLocalUser(accountLocalCreateDTO: AccountLocalCreateDTO): Long {
         // 만약 이메일이 없다면 계정을 만듬
-        val account = accountRepository.findByEmail(accountCreateDTO.email) ?: accountCreateDTO.toEntity(passwordEncoder)
+        val account = accountRepository.findByEmail(accountLocalCreateDTO.email) ?: accountLocalCreateDTO.toEntity(passwordEncoder)
         return accountRepository.save(account).id
     }
 

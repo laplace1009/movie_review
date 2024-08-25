@@ -1,6 +1,6 @@
 package com.laplace.movie_review.service
 
-import com.laplace.movie_review.dto.account.AccountCreateDTO
+import com.laplace.movie_review.dto.account.AccountLocalCreateDTO
 import com.laplace.movie_review.entity.Account
 import com.laplace.movie_review.repository.AccountRepository
 import org.junit.jupiter.api.BeforeEach
@@ -61,14 +61,14 @@ class AccountServiceTest {
 
     @Test
     fun `createLocalUser should create a new if email does not exists`() {
-        val accountCreateDTO = AccountCreateDTO(username, email, password)
-        `when`(accountRepository.findByEmail(accountCreateDTO.email)).thenReturn(null)
-        `when`(passwordEncoder.encode(accountCreateDTO.password)).thenReturn("encode")
+        val accountLocalCreateDTO = AccountLocalCreateDTO(username, email, password)
+        `when`(accountRepository.findByEmail(accountLocalCreateDTO.email)).thenReturn(null)
+        `when`(passwordEncoder.encode(accountLocalCreateDTO.password)).thenReturn("encode")
         val savedAccount = Account(username, email, "encode").apply {
             id = 1
         }
         `when`(accountRepository.save(any(Account::class.java))).thenReturn(savedAccount)
-        val userId = accountService.createLocalUser(accountCreateDTO)
+        val userId = accountService.createLocalUser(accountLocalCreateDTO)
 
         assertEquals(1L, userId)
 
